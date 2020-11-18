@@ -244,32 +244,31 @@ int main(int argc, char* argv[])
 	int* formed_clusters;
 	int* before_clusters;
 	int* after_cluster;
-	float tol = 0.000001;
+	float tol = 0.0;
 
-	//tol = atof(argv[3]);
+	tic = clock();
 
-	//printf("Enter Tolerance:  ");
-	//scanf("%f",&tol);
-	printf("Tolerance = %.10f\n", tol);
 	//Readinf file
 	FILE* ifp;
-	fopen_s(&ifp, "input4.txt", "r");
+	fopen_s(&ifp, "input2.txt", "r");
 	readImageSize(ifp, &K, &x, &y);
 	num_points = x * y;
 	points = new Point[num_points];
 	readPoints(ifp, points, num_points);
 	fclose(ifp);
 
-	before_clusters = (int*)malloc(sizeof(int) * num_points);
+	before_clusters = new int[num_points];
 	after_cluster = new int[num_points];
-
 	mean = new Point[K];
-	//mean = malloc(sizeof(Point) * K);
 
 	//initializing to default values
 	initialize(mean, K, num_points, points);
 	IntClusterMem(before_clusters, num_points);
 	IntClusterMem(after_cluster, num_points);
+
+	toc = clock();
+	tspantemp = (double)(toc - tic) / (double)CLOCKS_PER_SEC;
+	tspan += tspantemp;
 
 	while (1)
 	{
@@ -281,7 +280,7 @@ int main(int argc, char* argv[])
 			after_cluster[i] = pointsCluster(points[i], mean, K);
 		}
 		calcNewMean(points, after_cluster, mean, K, num_points);
-		//printf("New Centroids are calculated!\n");
+		
 		toc = clock();
 		tspantemp = (double)(toc - tic) / (double)CLOCKS_PER_SEC;
 		tspan += tspantemp;
@@ -301,12 +300,17 @@ int main(int argc, char* argv[])
 			break;
 
 	}
-	printf("Total Iterations = %d\n", iter);
-	printf("Total time elapsed in forming clusters : %f msec\n", tspan * 1000);
-	//Outputting to the ofp file
+	tic = clock();
 
+	//Outputting to the ofp file
 	createImage2(after_cluster, K, num_points, points, x, y);
-	createImage(points, x, y);
+
+	toc = clock();
+	tspantemp = (double)(toc - tic) / (double)CLOCKS_PER_SEC;
+	tspan += tspantemp;
+
+	printf("Total Iterations = %d\n", iter);
+	printf("Total time elapsed in forming clusters : %f sec\n", tspan);
 
 	//End of all
 	return 0;
