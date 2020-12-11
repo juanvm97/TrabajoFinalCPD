@@ -273,7 +273,7 @@ int main(int argc, char* argv[])
 	tic = clock();
 
 	FILE* ifp;
-	fopen_s(&ifp, "input2.txt", "r");
+	fopen_s(&ifp, "input1.txt", "r");
 	readImageSize(ifp, &K, &x, &y);
 	num_points = x * y;
 	points = (Point*)malloc(sizeof(Point) * num_points);

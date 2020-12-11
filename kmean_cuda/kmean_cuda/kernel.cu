@@ -243,11 +243,11 @@ int main(int argc, char* argv[])
 
 	//Readinf file
 	FILE* ifp;
-	fopen_s(&ifp, "input4.txt", "r");
+	fopen_s(&ifp, "input2.txt", "r");
 	readImageSize(ifp, &K, &x, &y);
 	num_points = x * y;
-	int blockX = 16;
-	int blockY = 16;
+	int blockX = 32;
+	int blockY = 32;
 	//allocate CPU memory
 	points = (Point*)malloc(sizeof(Point) * num_points);
 	readPoints(ifp, points, num_points);
@@ -352,9 +352,9 @@ int main(int argc, char* argv[])
 			break;
 
 	}
-
+	
 	//Outputting to the ofp file
-	createImage2(after_cluster, K, num_points, points, x, y);
+	//createImage2(after_cluster, K, num_points, points, x, y);
 
 	cudaEventRecord(end1, 0);
 	cudaEventSynchronize(end1);
